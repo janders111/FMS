@@ -6,7 +6,7 @@ import model.Person;
 /**
  * Class for interfacing or doing anything with the event table in our database.
  */
-public class EventDAO extends DAO {
+public class EventDAO extends DBConnManager {
     /**
      * Add a life event to a corresponding person. Notice that the person ID is stored in
      * the event object, therefore, we just need to take in the event object.

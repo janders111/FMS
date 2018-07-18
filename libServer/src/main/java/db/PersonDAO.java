@@ -5,7 +5,7 @@ import model.Person;
 /**
  * Class for interfacing or doing anything with the person table in our database.
  */
-public class PersonDAO extends DAO {
+public class PersonDAO extends DBConnManager {
     /**
      * Tells if the person passed in already exists.
      * @param p Person ID must be filled in.
@@ -27,7 +27,9 @@ public class PersonDAO extends DAO {
         return null;
     }
     public Person createPerson(Person p) {
-        return null;
+        openConnection();
+        
+        closeConnection(true);
     }
     public Boolean deletePerson(String personID) {
         return false;

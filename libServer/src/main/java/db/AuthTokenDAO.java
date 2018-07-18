@@ -11,34 +11,7 @@ import model.User;
  * like there should be a create authToken function, but this is done at the time the user makes
  * an account. See userDAO.
  */
-public class AuthTokenDAO extends DAO {
-
-    public void createTables() throws SQLException {
-        try {
-            Statement stmt = null;
-            try {
-                stmt = conn.createStatement();
-
-                stmt.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS `AuthTokens` (\n" +
-                        "        `Username`      TEXT NOT NULL,\n" +
-                        "        `Token` TEXT NOT NULL UNIQUE,\n" +
-                        "        PRIMARY KEY(Token)\n" +
-                        ");");
-            }
-            finally {
-                if (stmt != null) {
-                    stmt.close();
-                    stmt = null;
-                }
-            }
-        }
-        catch (SQLException e) {
-            throw new SQLException("createTables failed", e);
-        }
-    }
-
-
+public class AuthTokenDAO extends DBConnManager {
     /**
      * To check whether the AuthToken really corresponds to a user.
      * @param u Must contain AuthToken and UserID field.
@@ -48,7 +21,6 @@ public class AuthTokenDAO extends DAO {
         return true;
     }
 
-
     /**
      * To get a user's auth token.
      * @param u Must contain AuthToken and UserID field.
@@ -57,7 +29,6 @@ public class AuthTokenDAO extends DAO {
     public AuthToken getAuthToken(User u) {
         return null;
     }
-
 
     public Boolean deleteAuthToken(String username) {
         return true;

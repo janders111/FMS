@@ -7,7 +7,7 @@ import model.User;
 /**
  * Class for interfacing or doing anything with the user table in our database.
  */
-public class UserDAO extends DAO {
+public class UserDAO extends DBConnManager {
     /**
      * Tells if user that is passed in exists.
      * @param u user ID or Username must be filled in. (this may change).
