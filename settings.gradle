@@ -1,1 +1,1 @@
-include ':app', ':libServer'
+include ':app', ':libServer', ':sqlite-jdbc-3.7.2'

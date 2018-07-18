@@ -6,14 +6,15 @@ import model.Person;
 /**
  * Class for interfacing or doing anything with the event table in our database.
  */
-public class EventDAO {
+public class EventDAO extends DAO {
     /**
-     * Add a life event to a corresponding person.
+     * Add a life event to a corresponding person. Notice that the person ID is stored in
+     * the event object, therefore, we just need to take in the event object.
      * @param p Person that you want to add an event too.
      * @param e Event you want to add to that person's life.
      * @return True if event was successfully added.
-     */db/EventDAO.java:15
-    public boolean addEventToPerson(Person p, Event e) {
+     *
+    public boolean addEventToPerson(Event e) {
         return true;
     }
 
@@ -23,6 +24,9 @@ public class EventDAO {
      * @return the found event object, or null if not found.
      */
     public Event getEvent(String eventID) {
+        return null;
+    }
+    public Event[] getUsersEvents(String userID) {
         return null;
     }
     public Event createEvent(Event e) {

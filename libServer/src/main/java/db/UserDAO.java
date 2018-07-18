@@ -7,7 +7,7 @@ import model.User;
 /**
  * Class for interfacing or doing anything with the user table in our database.
  */
-public class UserDAO {
+public class UserDAO extends DAO {
     /**
      * Tells if user that is passed in exists.
      * @param u user ID or Username must be filled in. (this may change).
@@ -16,16 +16,6 @@ public class UserDAO {
     public Boolean userExists(User u) {
         return true;
     }
-    /**
-     * When generating the tree, use this function to add users to a person's tree.
-     * @param u User whose tree we are making.
-     * @param p Person to be added to the user's tree.
-     * @return True if person was added
-     */
-    public boolean addPersonToUserTree(User u, Person p) {
-        return true;
-    }
-
     /**
      * Gets the user object of the user, given a user ID.
      * @param userID ID for the user's object you want.

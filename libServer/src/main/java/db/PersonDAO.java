@@ -5,7 +5,7 @@ import model.Person;
 /**
  * Class for interfacing or doing anything with the person table in our database.
  */
-public class PersonDAO {
+public class PersonDAO extends DAO {
     /**
      * Tells if the person passed in already exists.
      * @param p Person ID must be filled in.
@@ -21,6 +21,9 @@ public class PersonDAO {
      * @return the found person object, or null if not found.
      */
     public Person getPerson(String personID) {
+        return null;
+    }
+    public Person[] getUsersPeoples(String userID) {
         return null;
     }
     public Person createPerson(Person p) {
