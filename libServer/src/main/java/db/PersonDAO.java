@@ -1,5 +1,7 @@
 package db;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +14,6 @@ import model.Person;
  * Class for interfacing or doing anything with the person table in our database.
  */
 public class PersonDAO extends DBConnManager {
-    private Connection conn;
     /**
      * Gets the person with the given ID. Might overload this function in the future.
      * @param personID ID of the person whose object you want to access
@@ -21,21 +22,21 @@ public class PersonDAO extends DBConnManager {
     public Person getPerson(String personID) throws SQLException{
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Person resultPerson;
+        Person resultPerson = null;
         try {
             String sql = "SELECT * FROM Persons WHERE PersonID = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, personID);
 
             rs = stmt.executeQuery();
-            if(rs == null) {
-                return null;
+            if(rs.next()) {
+                resultPerson = new Person(rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getString(8));
             }
-            resultPerson = new Person(rs.getString(1), rs.getString(2), rs.getString(3),
-                    rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
-                    rs.getString(8));
         }
         catch (SQLException e) {
+            e.toString();
             throw new SQLException("getUsersPeoples failed", e);
         }
         finally {
@@ -83,11 +84,17 @@ public class PersonDAO extends DBConnManager {
     }
 
 
-    public void createPerson(Person p) throws SQLException{
+    public Boolean createPerson(Person p){
+        Boolean createSuccess = true;
         PreparedStatement stmt = null;
         try {
             String sql = "INSERT INTO Persons (PersonID, Descendant, FirstName, " +
                     "LastName, Gender, Mother, Father, Spouse) VALUES(?,?,?,?,?,?,?,?)";
+
+            if(conn == null) {
+                System.out.println("Connection is null. Did you make a new connection?");
+                throw new SQLException("createPerson failed: Connection is null. Did you make a new connection?");
+            }
 
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, p.getPersonID());
@@ -100,21 +107,31 @@ public class PersonDAO extends DBConnManager {
             stmt.setString(8, p.getSpouse());
 
             if (stmt.executeUpdate() != 1) {
-                throw new SQLException("createPerson failed: Could not insert");
+                //throw new SQLException("createPerson failed: Could not insert");
+                createSuccess = false;
             }
         }
         catch (SQLException e) {
-            throw new SQLException("createPerson failed", e);
+            //throw new SQLException("createPerson failed", e);
+            createSuccess = false;
         }
         finally {
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    e.toString();
+                    e.printStackTrace();
+                }
             }
         }
+        return createSuccess;
     }
 
 
-    public void deletePerson(String personID) throws SQLException{
+    public Boolean deletePerson(String personID) throws SQLException{
+        Boolean success = true;
         PreparedStatement stmt = null;
         try {
             String sql = "DELETE FROM Persons WHERE PersonID = ?";
@@ -122,11 +139,33 @@ public class PersonDAO extends DBConnManager {
             stmt.setString(1, personID);
 
             if (stmt.executeUpdate() != 1) {
-                throw new SQLException("deletePerson failed: Could not delete");
+                success = false;
             }
         }
         catch (SQLException e) {
             throw new SQLException("deletePerson failed", e);
+        }
+        finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return success;
+    }
+
+    public void deleteAllPersons() throws SQLException{
+        PreparedStatement stmt = null;
+        try {
+            String sql = "DELETE FROM Persons";
+            if(conn == null) {
+                System.out.println("Connection is null. Did you make a new connection?");
+                throw new SQLException("createPerson failed: Connection is null. Did you make a new connection?");
+            }
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new SQLException("deleteAllPersons failed", e);
         }
         finally {
             if (stmt != null) {

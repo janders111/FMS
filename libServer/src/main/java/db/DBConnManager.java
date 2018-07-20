@@ -10,7 +10,7 @@ import java.sql.Statement;
  */
 
 public class DBConnManager {
-    protected Connection conn;
+    public Connection conn;
 
     static {
         try {
@@ -40,7 +40,8 @@ public class DBConnManager {
                         "        `EventType`     TEXT,\n" +
                         "        `Year`  INTEGER,\n" +
                         "        PRIMARY KEY(EventID)\n" +
-                        ");\n" +
+                        ");\n" );
+                stmt.executeUpdate("" +
                         "CREATE TABLE IF NOT EXISTS `Persons` (\n" +
                         "        `PersonID`      TEXT NOT NULL UNIQUE,\n" +
                         "        `Descendant`    TEXT NOT NULL,\n" +
@@ -51,7 +52,8 @@ public class DBConnManager {
                         "        `Father`        TEXT,\n" +
                         "        `Spouse`        TEXT,\n" +
                         "        PRIMARY KEY(PersonID)\n" +
-                        ");\n" +
+                        ");\n" );
+                stmt.executeUpdate("" +
                         "CREATE TABLE IF NOT EXISTS `Users` (\n" +
                         "        `Username`      TEXT NOT NULL UNIQUE,\n" +
                         "        `Password`      TEXT NOT NULL,\n" +
@@ -60,15 +62,15 @@ public class DBConnManager {
                         "        `LastName`      TEXT NOT NULL,\n" +
                         "        `Gender`        TEXT,\n" +
                         "        `PersonID`      TEXT NOT NULL,\n" +
-                        "        constraint ck_Gender(Gender in (M, F)),\n" +
+                        //"        CONSTRAINT CHK_Person CHECK (Gender in (M, F)),\n" +
                         "        PRIMARY KEY(Username)\n" +
-                        ");\n" +
+                        ");\n" );
+                stmt.executeUpdate("" +
                         "CREATE TABLE IF NOT EXISTS `AuthTokens` (\n" +
                         "        `Username`      TEXT NOT NULL,\n" +
                         "        `Token` TEXT NOT NULL UNIQUE,\n" +
                         "        PRIMARY KEY(Token)\n" +
-                        ");\n" +
-                        "\n");
+                        ");\n" );
             }
             finally {
                 if (stmt != null) {

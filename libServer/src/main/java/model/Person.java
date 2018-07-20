@@ -1,4 +1,7 @@
 package model;
+
+import java.util.Objects;
+
 /**
  * This class holds data that is being passed too and from the dao. Modeled after the table called Persons.
  */
@@ -97,5 +100,26 @@ public class Person {
 
     public void setSpouse(String spouse) {
         Spouse = spouse;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(PersonID, person.PersonID) &&
+                Objects.equals(Descendant, person.Descendant) &&
+                Objects.equals(FirstName, person.FirstName) &&
+                Objects.equals(LastName, person.LastName) &&
+                Objects.equals(Gender, person.Gender) &&
+                Objects.equals(Mother, person.Mother) &&
+                Objects.equals(Father, person.Father) &&
+                Objects.equals(Spouse, person.Spouse);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(PersonID, Descendant, FirstName, LastName, Gender, Mother, Father, Spouse);
     }
 }
