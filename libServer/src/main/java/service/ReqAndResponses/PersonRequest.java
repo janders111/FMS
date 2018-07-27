@@ -5,6 +5,12 @@ package service.ReqAndResponses;
  */
 public class PersonRequest {
     String PersonID;
+    String AuthToken;
+
+    public PersonRequest(String personID, String authToken) {
+        PersonID = personID;
+        AuthToken = authToken;
+    }
 
     public String getPersonID() {
         return PersonID;
@@ -14,5 +20,11 @@ public class PersonRequest {
         PersonID = personID;
     }
 
+    public String getAuthToken() {
+        return AuthToken;
+    }
 
+    public void setAuthToken(String authToken) {
+        AuthToken = authToken;
+    }
 }

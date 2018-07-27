@@ -1,18 +1,24 @@
 package service.ReqAndResponses;
+
+import java.util.Objects;
+
 /*
 This class is used for any service class that responds with a message.
  */
 public class ResponseMessage {
-    boolean error;
     String message;
+    boolean error;
 
-    /**
-     *
-     * @param error Since this is a general class to hold a message, this can tell if the message returned indicates an error.
-     * @param message
-     */
-    public ResponseMessage(boolean error, String message) {
+    public ResponseMessage(String message, boolean error) {
+        this.message = message;
         this.error = error;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -24,11 +30,18 @@ public class ResponseMessage {
         this.error = error;
     }
 
-    public String getMessage() {
-        return message;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResponseMessage that = (ResponseMessage) o;
+        return error == that.error &&
+                Objects.equals(message, that.message);
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(message, error);
     }
 }

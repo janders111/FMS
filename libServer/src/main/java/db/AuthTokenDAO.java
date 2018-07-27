@@ -1,37 +1,71 @@
 package db;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import model.AuthToken;
-import model.User;
 
 /**
- * Class for interfacing or doing anything with the AuthToken table in our database. It might feel
+ * Class for interfacing or doing anything with the AuthToken table in our database. It might seem
  * like there should be a create authToken function, but this is done at the time the user makes
  * an account. See userDAO.
  */
 public class AuthTokenDAO extends DBConnManager {
-    /**
-     * To check whether the AuthToken really corresponds to a user.
-     * @param u Must contain AuthToken and UserID field.
-     * @return True if the AuthToken does correspond to that user.
-     */
-    public boolean checkAuthToken(User u) {
-        return true;
+
+    public static void createAuthToken(AuthToken TokenObj, Connection conn) throws SQLException{
+        checkConnection(conn);
+        PreparedStatement stmt = null;
+        String sql = "DELETE FROM AuthTokens WHERE Username = ?";
+        stmt = conn.prepareStatement(sql);
+        stmt.setString(1, TokenObj.getUsername());
+        stmt.executeUpdate();
+
+        sql = "INSERT INTO AuthTokens (Username, Token) VALUES(?,?)";
+        stmt = conn.prepareStatement(sql);
+        stmt.setString(1, TokenObj.getUsername());
+        stmt.setString(2, TokenObj.getToken());
+
+        if (stmt.executeUpdate() != 1) {
+            throw new SQLException("createPerson failed: Could not insert");
+        }
+        if (stmt != null) {
+            stmt.close();
+        }
     }
 
-    /**
-     * To get a user's auth token.
-     * @param u Must contain AuthToken and UserID field.
-     * @return The authToken in a wrapper object
-     */
-    public AuthToken getAuthToken(User u) {
-        return null;
-    }
+    public static String getUsernameFromToken(String authToken) throws SQLException {
+        Connection conn1 = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String userName = null;
 
-    public Boolean deleteAuthToken(String username) {
-        return true;
+        try {
+            conn1 = DBConnManager.getConnection();
+            String sql = "SELECT Username FROM AuthTokens WHERE Token = ?";
+            stmt = conn1.prepareStatement(sql);
+            stmt.setString(1, authToken);
+
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                userName = rs.getString(1);
+            }
+            else {
+                throw new SQLException("authToken not found.");
+            }
+        }
+        catch(SQLException e) {
+            throw e;
+        }
+        finally {
+            closeConnection(conn1, true);
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return userName;
     }
 }
 

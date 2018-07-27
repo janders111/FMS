@@ -4,21 +4,18 @@ package service.ReqAndResponses;
  */
 public class FillRequest {
     String UserName;
-    int Generation;
+    int NumGenerations;
+
+    public FillRequest(String userName, int numGenerations) {
+        UserName = userName;
+        NumGenerations = numGenerations;
+    }
 
     public String getUserName() {
         return UserName;
     }
 
-    public void setUserName(String userName) {
-        UserName = userName;
-    }
-
-    public int getGeneration() {
-        return Generation;
-    }
-
-    public void setGeneration(int generation) {
-        Generation = generation;
+    public int getNumGenerations() {
+        return NumGenerations;
     }
 }

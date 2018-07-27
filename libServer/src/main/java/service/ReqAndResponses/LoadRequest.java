@@ -14,43 +14,31 @@ import model.User;
  array have the same format as those returned by the /event/[eventID] API.
  */
 public class LoadRequest {
-    User usersArray[];
-    Person personsArray[];
-    Event eventsArray[];
+    User users[];
+    Person persons[];
+    Event events[];
 
     /**
      *
-     * @param usersArray Array of users to be created.
-     * @param personsArray Persons in the tree of the users.
-     * @param eventsArray Events in the life of the users.
+     * @param users Array of users to be created.
+     * @param persons Persons in the tree of the users.
+     * @param events Events in the life of the users.
      */
-    public LoadRequest(User[] usersArray, Person[] personsArray, Event[] eventsArray) {
-        this.usersArray = usersArray;
-        this.personsArray = personsArray;
-        this.eventsArray = eventsArray;
+    public LoadRequest(User[] users, Person[] persons, Event[] events) {
+        this.users = users;
+        this.persons = persons;
+        this.events = events;
     }
 
     public User[] getUsersArray() {
-        return usersArray;
-    }
-
-    public void setUsersArray(User[] usersArray) {
-        this.usersArray = usersArray;
+        return users;
     }
 
     public Person[] getPersonsArray() {
-        return personsArray;
-    }
-
-    public void setPersonsArray(Person[] personsArray) {
-        this.personsArray = personsArray;
+        return persons;
     }
 
     public Event[] getEventsArray() {
-        return eventsArray;
-    }
-
-    public void setEventsArray(Event[] eventsArray) {
-        this.eventsArray = eventsArray;
+        return events;
     }
 }

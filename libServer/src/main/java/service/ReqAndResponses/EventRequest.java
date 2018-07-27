@@ -21,15 +21,7 @@ public class EventRequest {
         return EventID;
     }
 
-    public void setEventID(String eventID) {
-        EventID = eventID;
-    }
-
     public String getAuthToken() {
         return AuthToken;
-    }
-
-    public void setAuthToken(String authToken) {
-        AuthToken = authToken;
     }
 }

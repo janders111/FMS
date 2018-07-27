@@ -1,7 +1,10 @@
 package db;
 
-import model.AuthToken;
-import model.Person;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import model.User;
 
 /**
@@ -9,25 +12,105 @@ import model.User;
  */
 public class UserDAO extends DBConnManager {
     /**
-     * Tells if user that is passed in exists.
-     * @param u user ID or Username must be filled in. (this may change).
-     * @return True of user exists.
-     */
-    public Boolean userExists(User u) {
-        return true;
-    }
-    /**
      * Gets the user object of the user, given a user ID.
-     * @param userID ID for the user's object you want.
+     * @param userName userName for the user whose User object you want.
      * @return the found user, or null if not found.
      */
-    public User getUser (String userID) {
-        return null;
+    public static User getUser (String userName) throws SQLException{
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        User result = null;
+        Connection conn1 = null;
+        try {
+            conn1 = DBConnManager.getConnection();
+            String sql = "SELECT * FROM Users WHERE Username = ?";
+            stmt = conn1.prepareStatement(sql);
+            stmt.setString(1, userName);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                String Username = rs.getString(1);
+                String Password = rs.getString(2);
+                String Email = rs.getString(3);
+                String FirstName = rs.getString(4);
+                String LastName = rs.getString(5);
+                String Gender = rs.getString(6);
+                String PersonID = rs.getString(7);
+                result = new User(Username, Password, Email, FirstName, LastName,
+                        Gender, PersonID);
+            } else {
+                throw new SQLException("getUser: No users found with that username.");
+            }
+        }
+        catch (SQLException e) {
+            throw e;
+        }
+        finally {
+            closeConnection(conn1, true);
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        }
+        return result;
     }
-    public AuthToken createUser(User u) {
-        return null;
+
+    public static Boolean usernameExists (String userName) throws SQLException{
+        Connection conn1 = DBConnManager.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Boolean exists;
+
+        try {
+            String sql = "SELECT * FROM Users WHERE Username = ?";
+            stmt = conn1.prepareStatement(sql);
+            stmt.setString(1, userName);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                exists = true;
+            } else {
+                exists = false;
+            }
+        }
+        catch(SQLException e) {
+            throw e;
+        }
+        finally {
+            closeConnection(conn1, true);
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        }
+        return exists;
     }
-    public boolean deleteUser(User u) {
-        return true;
+
+    public static void createUser(User u, Connection conn) throws Exception{
+        checkConnection(conn);
+        if(u.getGender().equals("m") == false) {
+            if(u.getGender().equals("f") == false)
+                throw new IOException("Gender must be m/f");
+        }
+        if(usernameExists(u.getUserName())) {
+            throw new SQLException("Username is not unique");
+        }
+        PreparedStatement stmt = null;
+        String sql = "INSERT INTO Users (Username, Password, Email, " +
+                "FirstName, LastName, Gender, PersonID) VALUES(?,?,?,?,?,?,?)";
+
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, u.getUserName());
+            stmt.setString(2, u.getPassword());
+            stmt.setString(3, u.getEmail());
+            stmt.setString(4, u.getFirstName());
+            stmt.setString(5, u.getLastName());
+            stmt.setString(6, u.getGender());
+            stmt.setString(7, u.getPersonID());
+            if (stmt.executeUpdate() != 1) {
+                throw new SQLException("createPerson Could not insert");
+            }
+        }
+        catch(SQLException e) {
+            throw new SQLException("Check that your request meets the sql constraints.");
+        }
+        if (stmt != null) {
+            stmt.close();
+        }
     }
 }

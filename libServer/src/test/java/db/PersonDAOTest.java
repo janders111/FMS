@@ -1,106 +1,130 @@
 package db;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
-import java.sql.SQLClientInfoException;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.Person;
 
 import static org.junit.Assert.*;
 
 public class PersonDAOTest {
-    PersonDAO myPersonDAO;
+    Connection conn;
     Person p1;
     Person p2;
     Person p3;
 
     @org.junit.Before
     public void setUp() throws Exception {
-        myPersonDAO = new PersonDAO();
-        myPersonDAO.openConnection();
-        myPersonDAO.createTables(); //creates tables if not already created
-        myPersonDAO.deleteAllPersons(); //makes sure the persons table is empty
+        Connection conn = DBConnManager.getConnection();
+        DBConnManager.clearTables(conn);
 
         p1 = new Person("1234", "adam", "Jordan", "Andersen",
-                "M", "Evelyn", "Mark", "NA");
+                "m", "Evelyn", "Mark", "NA");
         p2 = new Person("4566", "adam", "Jacob", "Andersen",
-                "M", "Evelyn", "Mark", "NA");
+                "m", "Evelyn", "Mark", "NA");
         p3 = new Person("7896", "adam", "Kaitlyn", "Andersen",
-                "F", "Evelyn", "Mark", "NA");
+                "f", "Evelyn", "Mark", "NA");
 
-        assertTrue("Exception thrown while adding p1", myPersonDAO.createPerson(p1));
-        assertTrue("Exception thrown while adding p2", myPersonDAO.createPerson(p2));
-        assertTrue("Exception thrown while adding p3", myPersonDAO.createPerson(p3));
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-        myPersonDAO.closeConnection(true);
-        myPersonDAO = null;
+        PersonDAO.createPerson(p1, conn);
+        PersonDAO.createPerson(p2, conn);
+        PersonDAO.createPerson(p3, conn);
+        DBConnManager.closeConnection(conn, true);
+        conn = DBConnManager.getConnection();
     }
 
     @org.junit.Test
-    public void createPerson() {
+    public void testCreatePerson() {
+        Boolean threw = false;
         Person p1Duplicate = new Person("1234", "adam", "Jordan", "Andersen",
-                "M", "Evelyn", "Mark", "NA");
+                "m", "Evelyn", "Mark", "NA");
         Person personNoID = new Person(null, "adam", "Jordan", "Andersen",
-                "M", "Evelyn", "Mark", "NA");
-        Person p4 = new Person("456456", "adam", "Jacob", "Andersen",
-                "M", "Evelyn", "Mark", "NA");
+                "f", "Evelyn", "Mark", "NA");
+        Person badGender = new Person("456456", "adam", "Jacob", "Andersen",
+                "ooo", "Evelyn", "Mark", "NA");
 
-        Boolean success = myPersonDAO.createPerson(personNoID);
-        assertFalse("CreatePerson returned true when creating a person with no person ID. " +
-                        "It should have returned false to indicate failure."
-                , success);
+        try {
+            PersonDAO.createPerson(personNoID, conn);
+        } catch(Exception e) {
+            threw = true;
+        }
+        assertTrue("CreatePerson did not throw when creating a person with no person ID. ", threw);
+        threw = false;
+        try {
+            PersonDAO.createPerson(p1Duplicate, conn);
+        } catch(Exception e)  {
+            threw = true;
+        }
+        assertTrue("CreatePerson did not throw when creating a person with the same person ID. ", threw);
 
-        success = myPersonDAO.createPerson(p1Duplicate);
-        assertFalse("CreatePerson returned true when creating a person with the same person ID. " +
-                        "It should have returned false to indicate failure."
-                        , success);
-
-        success = myPersonDAO.createPerson(p4);
-        assertTrue("CreatePerson returned false when creating a " +
-                        "new valid person. It should have returned true.", success);
+        try {
+            PersonDAO.createPerson(badGender, conn);
+        } catch(Exception e) {
+            threw = true;
+        }
+        assertTrue("CreatePerson did not throw when creating a person without a valid gender. ", threw);
     }
 
     @org.junit.Test
-    public void getPerson() {
+    public void testGetPersonException() throws Exception{
         Person resultPerson = null;
-        try {
-            resultPerson = myPersonDAO.getPerson("1234");
-        }
-        catch(SQLException e) {
-            e.toString();
-            e.printStackTrace();;
-        }
-        assertTrue(resultPerson.equals(p1));
+        Boolean threw = false;
 
         try {
-            resultPerson = myPersonDAO.getPerson("12345");
+            resultPerson = PersonDAO.getPerson("12345");
         }
         catch(SQLException e) {
-            e.toString();
-            e.printStackTrace();;
+            threw = true;
         }
-        assertNull(resultPerson);
+        assertTrue("getPerson did not throw when it was given a non-existant personID", threw);
 
+        threw = false;
         try {
-            resultPerson = myPersonDAO.getPerson("");
+            resultPerson = PersonDAO.getPerson(null);
         }
         catch(SQLException e) {
-            e.toString();
-            e.printStackTrace();;
+            threw = true;
         }
-        assertNull(resultPerson);
+        assertTrue("getPerson did not throw when it was given a null personID", threw);
     }
 
     @org.junit.Test
-    public void getUsersPeoples() {
-
+    public void testGetPerson() throws Exception{
+        Person result = PersonDAO.getPerson("1234");
+        assertTrue("getPerson did not get right person e1", p1.equals(result));
+        result = PersonDAO.getPerson("4566");
+        assertTrue("getPerson did not get right person e2", p2.equals(result));
+        result = PersonDAO.getPerson("7896");
+        assertTrue("getPerson did not get right person e3", p3.equals(result));
     }
 
     @org.junit.Test
-    public void deletePerson() {
+    public void testGetUsersPeoples() throws Exception{
+        ArrayList<Person> pArr = PersonDAO.getUsersPeoples("adam");
+        assertEquals("GetUsersPeople did not return the right number of " +
+                            "people (with username adam)", pArr.size(), 3);
+        Boolean threw = false;
+        try {
+            PersonDAO.getUsersPeoples("asdf");
+        }
+        catch(SQLException e) {
+            threw = true;
+        }
+        assertTrue("getPerson did not throw when it was given a username with no family.", threw);
+    }
+
+    @org.junit.Test
+    public void testDeletePerson() throws Exception{
+        Connection conn = DBConnManager.getConnection();
+        PersonDAO.deleteUsersPeople("adam", conn);
+        DBConnManager.closeConnection(conn, true);
+        Boolean threw = false;
+        try {
+            PersonDAO.getUsersPeoples("adam");
+        }
+        catch(SQLException e) {
+            threw = true;
+        }
+        assertTrue("getPerson did not throw when querying deleted people", threw);
     }
 }

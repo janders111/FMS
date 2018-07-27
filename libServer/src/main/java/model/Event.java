@@ -1,22 +1,25 @@
 package model;
+
+import java.util.Objects;
+
 /**
  * This class holds data that is being passed too and from the dao. Modeled after the table called Events.
  */
 public class Event {
-    String EventID;
-    String Descendant	;
-    String Person	;
-    float Latitude;
-    float Longitude;
-    String Country;
-    String City;
-    String EventType;
-    int Year;
+    String eventID;
+    String descendant	;
+    String personID	;
+    float latitude;
+    float longitude;
+    String country;
+    String city;
+    String eventType;
+    int year;
 
     /**
      * @param eventID Unique ID for event
      * @param descendant Name of user account this event belongs to (nonempty)
-     * @param person person this event belongs to (non-empty string)
+     * @param personID person this event belongs to (non-empty string)
      * @param latitude Latitude of the event’s location
      * @param longitude Longitude of the event’s location
      * @param country Name of country where event occurred  (non-empty string)
@@ -24,88 +27,110 @@ public class Event {
      * @param eventType Ex: baptism, mairrage.
      * @param year Year the event occurred (integer formatted as string)
      */
-
-    public Event(String eventID, String descendant, String person, float latitude, float longitude, String country, String city, String eventType, int year) {
-        EventID = eventID;
-        Descendant = descendant;
-        Person = person;
-        Latitude = latitude;
-        Longitude = longitude;
-        Country = country;
-        City = city;
-        EventType = eventType;
-        Year = year;
+    public Event(String eventID, String descendant, String personID, float latitude, float longitude, String country, String city, String eventType, int year) {
+        this.eventID = eventID;
+        this.descendant = descendant;
+        this.personID = personID;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.country = country;
+        this.city = city;
+        this.eventType = eventType;
+        this.year = year;
     }
 
     public String getEventID() {
-        return EventID;
+        return eventID;
     }
 
     public void setEventID(String eventID) {
-        EventID = eventID;
+        this.eventID = eventID;
     }
 
     public String getDescendant() {
-        return Descendant;
+        return descendant;
     }
 
     public void setDescendant(String descendant) {
-        Descendant = descendant;
+        this.descendant = descendant;
     }
 
-    public String getPerson() {
-        return Person;
+    public String getPersonID() {
+        return personID;
     }
 
-    public void setPerson(String person) {
-        Person = person;
+    public void setPersonID(String personID) {
+        this.personID = personID;
     }
 
     public float getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
     public void setLatitude(float latitude) {
-        Latitude = latitude;
+        this.latitude = latitude;
     }
 
     public float getLongitude() {
-        return Longitude;
+        return longitude;
     }
 
     public void setLongitude(float longitude) {
-        Longitude = longitude;
+        this.longitude = longitude;
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String country) {
-        Country = country;
+        this.country = country;
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        City = city;
+        this.city = city;
     }
 
     public String getEventType() {
-        return EventType;
+        return eventType;
     }
 
     public void setEventType(String eventType) {
-        EventType = eventType;
+        this.eventType = eventType;
     }
 
     public int getYear() {
-        return Year;
+        return year;
     }
 
     public void setYear(int year) {
-        Year = year;
+        this.year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        Boolean ret =  Float.compare(event.latitude, latitude) == 0 &&
+                Float.compare(event.longitude, longitude) == 0 &&
+                year == event.year &&
+                Objects.equals(eventID, event.eventID) &&
+                Objects.equals(descendant, event.descendant) &&
+                Objects.equals(personID, event.personID) &&
+                Objects.equals(country, event.country) &&
+                Objects.equals(city, event.city) &&
+                Objects.equals(eventType, event.eventType);
+        return ret;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(eventID, descendant, personID, latitude, longitude, country, city, eventType, year);
     }
 }

@@ -4,10 +4,10 @@ package service.ReqAndResponses;
  * If login is sucessful, returns info about the person and an auth token. Otherwise, it returns an error message.
  */
 public class LoginResponse {
-    String Username;
-    String Token;
-    String PersonID;
-    String Message;
+    String userName;
+    String authToken;
+    String personID;
+    String message;
 
     /**
      *
@@ -16,43 +16,42 @@ public class LoginResponse {
      * @param personID
      * @param message only filled if an error occured. Otherwise null.
      */
-    public LoginResponse(String username, String token, String personID, String message) {
-        Username = username;
-        Token = token;
-        PersonID = personID;
-        Message = message;
+    public LoginResponse(String userName, String authToken, String personID, String message) {
+        this.userName = userName;
+        this.authToken = authToken;
+        this.personID = personID;
+        this.message = message;
     }
 
-    public String getMessage() {
-        return Message;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMessage(String message) {
-        Message = message;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getUsername() {
-        return Username;
+    public String getAuthToken() {
+        return authToken;
     }
 
-    public void setUsername(String username) {
-        Username = username;
-    }
-
-    public String getToken() {
-        return Token;
-    }
-
-    public void setToken(String token) {
-        Token = token;
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public String getPersonID() {
-        return PersonID;
+        return personID;
     }
 
     public void setPersonID(String personID) {
-        PersonID = personID;
+        this.personID = personID;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

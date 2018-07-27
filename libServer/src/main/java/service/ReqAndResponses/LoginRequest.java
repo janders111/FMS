@@ -4,22 +4,19 @@ package service.ReqAndResponses;
  * Holds information needed to request a login for a user.
  */
 public class LoginRequest {
-    String Username;
-    String Password;
+    String userName;
+    String password;
 
-    public String getUsername() {
-        return Username;
+    public LoginRequest(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
     }
 
-    public void setUsername(String username) {
-        Username = username;
+    public String getUsername() {
+        return userName;
     }
 
     public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
+        return password;
     }
 }

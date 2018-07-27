@@ -1,13 +1,12 @@
 package service.ReqAndResponses;
 
-import service.Event;
+import model.Event;
 
 /**
  * Response given by the PersonAllEvents function
  */
 public class PersonAllEventsResponse {
     Event eventArray[];
-    String ErrMessage;
 
     /**
      *
@@ -16,7 +15,6 @@ public class PersonAllEventsResponse {
      */
     public PersonAllEventsResponse(Event[] eventArray, String errMessage) {
         this.eventArray = eventArray;
-        ErrMessage = errMessage;
     }
 
     public Event[] getEventArray() {
@@ -27,11 +25,4 @@ public class PersonAllEventsResponse {
         this.eventArray = eventArray;
     }
 
-    public String getErrMessage() {
-        return ErrMessage;
-    }
-
-    public void setErrMessage(String errMessage) {
-        ErrMessage = errMessage;
-    }
 }

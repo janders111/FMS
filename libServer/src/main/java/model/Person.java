@@ -6,14 +6,14 @@ import java.util.Objects;
  * This class holds data that is being passed too and from the dao. Modeled after the table called Persons.
  */
 public class Person {
-    String PersonID;
-    String Descendant;
-    String FirstName;
-    String LastName;
-    String Gender;
-    String Mother;
-    String Father;
-    String Spouse;
+    String personID;
+    String descendant;
+    String firstName;
+    String lastName;
+    String gender;
+    String mother;
+    String father;
+    String spouse;
 
     /**
      *
@@ -21,85 +21,84 @@ public class Person {
      * @param descendant  Name of user account this person belongs to
      * @param firstName
      * @param lastName
-     * @param gender
-     * @param father  Person’s gender ("m" or "f")
-     * @param mother OPTIONAL, can be missing
+     * @param gender Person’s gender ("m" or "f")
+     * @param mother
+     * @param father OPTIONAL, can be missing
      * @param spouse OPTIONAL, can be missing
      */
-
     public Person(String personID, String descendant, String firstName, String lastName, String gender, String mother, String father, String spouse) {
-        PersonID = personID;
-        Descendant = descendant;
-        FirstName = firstName;
-        LastName = lastName;
-        Gender = gender;
-        Mother = mother;
-        Father = father;
-        Spouse = spouse;
+        this.personID = personID;
+        this.descendant = descendant;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.mother = mother;
+        this.father = father;
+        this.spouse = spouse;
     }
 
     public String getPersonID() {
-        return PersonID;
+        return personID;
     }
 
     public void setPersonID(String personID) {
-        PersonID = personID;
+        this.personID = personID;
     }
 
     public String getDescendant() {
-        return Descendant;
+        return descendant;
     }
 
     public void setDescendant(String descendant) {
-        Descendant = descendant;
+        this.descendant = descendant;
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public void setGender(String gender) {
-        Gender = gender;
+        this.gender = gender;
     }
 
     public String getMother() {
-        return Mother;
+        return mother;
     }
 
     public void setMother(String mother) {
-        Mother = mother;
+        this.mother = mother;
     }
 
     public String getFather() {
-        return Father;
+        return father;
     }
 
     public void setFather(String father) {
-        Father = father;
+        this.father = father;
     }
 
     public String getSpouse() {
-        return Spouse;
+        return spouse;
     }
 
     public void setSpouse(String spouse) {
-        Spouse = spouse;
+        this.spouse = spouse;
     }
 
     @Override
@@ -107,19 +106,19 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(PersonID, person.PersonID) &&
-                Objects.equals(Descendant, person.Descendant) &&
-                Objects.equals(FirstName, person.FirstName) &&
-                Objects.equals(LastName, person.LastName) &&
-                Objects.equals(Gender, person.Gender) &&
-                Objects.equals(Mother, person.Mother) &&
-                Objects.equals(Father, person.Father) &&
-                Objects.equals(Spouse, person.Spouse);
+        return Objects.equals(personID, person.personID) &&
+                Objects.equals(descendant, person.descendant) &&
+                Objects.equals(firstName, person.firstName) &&
+                Objects.equals(lastName, person.lastName) &&
+                Objects.equals(gender, person.gender) &&
+                Objects.equals(mother, person.mother) &&
+                Objects.equals(father, person.father) &&
+                Objects.equals(spouse, person.spouse);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(PersonID, Descendant, FirstName, LastName, Gender, Mother, Father, Spouse);
+        return Objects.hash(personID, descendant, firstName, lastName, gender, mother, father, spouse);
     }
 }

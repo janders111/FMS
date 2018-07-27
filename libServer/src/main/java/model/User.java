@@ -1,90 +1,103 @@
 package model;
+
+import java.util.Objects;
+
 /**
  * This class holds data that is being passed too and from the dao. Modeled after the table called Users.
  */
 
 public class User {
-    String Username;
-    String Password;
-    String Email;
-    String FirstName;
-    String LastName;
-    String Gender;
-    String PersonID;
+    String userName;
+    String password;
+    String email;
+    String firstName;
+    String lastName;
+    String gender;
+    String personID;
 
-    /**
-     *
-     * @param username Unique handle for user
-     * @param password User's password
-     * @param email User's email
-     * @param firstName User's first name
-     * @param lastName User's last name
-     * @param gender "m" or "f"
-     * @param personID Unique ID generated for person
-     */
-    public User(String username, String password, String email, String firstName, String lastName, String gender, String personID) {
-        Username = username;
-        Password = password;
-        Email = email;
-        FirstName = firstName;
-        LastName = lastName;
-        Gender = gender;
-        PersonID = personID;
+    public User(String userName, String password, String email, String firstName, String lastName, String gender, String personID) {
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.personID = personID;
     }
 
-    public String getUsername() {
-        return Username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        Username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public void setGender(String gender) {
-        Gender = gender;
+        this.gender = gender;
     }
 
     public String getPersonID() {
-        return PersonID;
+        return personID;
     }
 
     public void setPersonID(String personID) {
-        PersonID = personID;
+        this.personID = personID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userName, user.userName) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(gender, user.gender) &&
+                Objects.equals(personID, user.personID);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(userName, password, email, firstName, lastName, gender, personID);
     }
 }

@@ -1,6 +1,6 @@
 package service.ReqAndResponses;
 
-import service.Person;
+import model.Person;
 
 /**
  * Request for PersonAllFamily function
