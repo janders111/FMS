@@ -97,7 +97,6 @@ public class User {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(userName, password, email, firstName, lastName, gender, personID);
     }
 }

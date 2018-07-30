@@ -26,14 +26,14 @@ public class LoginServiceTest extends TestCase {
         LoginRequest req = new LoginRequest("username", "password");
         LoginResponse res = (LoginResponse)LoginService.login(req);
 
-        String tokenFirst = res.getToken();
+        String tokenFirst = res.getAuthToken();
         String AuthTokenReturnedUsername = AuthTokenDAO.getUsernameFromToken(tokenFirst);
         assertTrue("Login did not store a new authToken", AuthTokenReturnedUsername.equals("username"));
 
         //run it again, test if new authtoken works and is unique
         res = (LoginResponse)LoginService.login(req);
 
-        String tokenSecond = res.getToken();
+        String tokenSecond = res.getAuthToken();
         AuthTokenReturnedUsername = AuthTokenDAO.getUsernameFromToken(tokenSecond);
         assertFalse("Login did not store a new " +
                 "authToken when called a second time", tokenSecond.equals(tokenFirst));

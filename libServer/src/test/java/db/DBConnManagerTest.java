@@ -53,7 +53,7 @@ public class DBConnManagerTest extends TestCase {
         threw = false;
 
         try {//check that persons table got cleared
-            PersonDAO.getPerson("p");
+            PersonDAO.getPerson("p", "p");
         } catch (Exception ex){
             threw = true;
         }
@@ -67,10 +67,10 @@ public class DBConnManagerTest extends TestCase {
         String returnedUsername;
         Boolean threw = false;
         Connection conn = DBConnManager.getConnection();
-        AuthToken a = new AuthToken("username1", "token1");
-        AuthTokenDAO.createAuthToken(a, conn);
-        a = new AuthToken("username2", "token2");
-        AuthTokenDAO.createAuthToken(a, conn);
+        AuthToken a1 = new AuthToken("username1", "token1");
+        AuthTokenDAO.createAuthToken(a1, conn);
+        AuthToken a2 = new AuthToken("username2", "token2");
+        AuthTokenDAO.createAuthToken(a2, conn);
         DBConnManager.closeConnection(conn, false);
 
         try {
@@ -84,10 +84,10 @@ public class DBConnManagerTest extends TestCase {
     public void testCloseConnectionCommit() throws Exception{
         String returnedUsername;
         Connection conn = DBConnManager.getConnection();
-        AuthToken a = new AuthToken("username1", "token1");
-        AuthTokenDAO.createAuthToken(a, conn);
-        a = new AuthToken("username2", "token2");
-        AuthTokenDAO.createAuthToken(a, conn);
+        AuthToken a1 = new AuthToken("username1", "token1");
+        AuthTokenDAO.createAuthToken(a1, conn);
+        AuthToken a2 = new AuthToken("username2", "token2");
+        AuthTokenDAO.createAuthToken(a2, conn);
         DBConnManager.closeConnection(conn, true);
 
         returnedUsername = AuthTokenDAO.getUsernameFromToken("token1");
@@ -96,19 +96,7 @@ public class DBConnManagerTest extends TestCase {
         assertEquals("changes were not sucessfully comitted", returnedUsername, "username2");
     }
 
-    public void testCheckConnectionNull() {
-        Boolean threw = false;
-        Connection nullConn = null;
-        try {
-            DBConnManager.checkConnection(nullConn);
-        }
-        catch (Exception e){
-            threw = true;
-        }
-        assertTrue("checkTestConnection did not throw when given a null connection ", threw);
-    }
-
-    public void testCheckConnectionValid() throws Exception{
+    public void testCheckConnectionNull() throws Exception{
         Boolean threw = false;
         Connection conn = DBConnManager.getConnection();
         try {
@@ -121,5 +109,17 @@ public class DBConnManagerTest extends TestCase {
             DBConnManager.closeConnection(conn, true);
         }
         assertFalse("checkTestConnection threw when it was shown a valid connection", threw);
+    }
+
+    public void testCheckConnectionNullInvalid() {
+        Boolean threw = false;
+        Connection nullConn = null;
+        try {
+            DBConnManager.checkConnection(nullConn);
+        }
+        catch (Exception e){
+            threw = true;
+        }
+        assertTrue("checkTestConnection did not throw when given a null connection ", threw);
     }
 }

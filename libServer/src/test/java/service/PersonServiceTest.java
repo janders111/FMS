@@ -31,14 +31,14 @@ public class PersonServiceTest extends TestCase {
     }
 
     public void testPersonValid() {
-        PersonRequest req = new PersonRequest(res.getPersonID(), res.getToken());
+        PersonRequest req = new PersonRequest(res.getPersonID(), res.getAuthToken());
         Person ret = (Person)PersonService.Person(req);
 
         assertTrue("Person() did not return right person.",
                 res.getPersonID().equals(ret.getPersonID()));
 
         assertTrue("Person() did not return right person.",
-                res.getUsername().equals(ret.getDescendant()));
+                res.getUserName().equals(ret.getDescendant()));
     }
 
     public void testPersonNonValid() {
@@ -46,7 +46,7 @@ public class PersonServiceTest extends TestCase {
         ResponseMessage errorRes = (ResponseMessage)PersonService.Person(invalidTokenRequest);
         assertTrue("Person() should have given error to invalid authToken", errorRes.isError());
 
-        PersonRequest invalidPersonIDRequest = new PersonRequest("t", res.getToken());
+        PersonRequest invalidPersonIDRequest = new PersonRequest("t", res.getAuthToken());
         errorRes = (ResponseMessage)PersonService.Person(invalidTokenRequest);
         assertTrue("Person() should have given error due to invalid eventID", errorRes.isError());
     }

@@ -43,7 +43,7 @@ public class EventServiceTest extends TestCase {
     }
 
     public void testEventValid() {
-        EventRequest req = new EventRequest("id1", res.getToken());
+        EventRequest req = new EventRequest("id1", res.getAuthToken());
         Event ret = (Event)EventService.event(req);
 
         assertTrue("Event did not return right Event.",
@@ -55,7 +55,7 @@ public class EventServiceTest extends TestCase {
         ResponseMessage errorRes = (ResponseMessage)EventService.event(invalidTokenRequest);
         assertTrue("Person() should have given error to invalid authToken", errorRes.isError());
 
-        EventRequest invalidEventIDRequest = new EventRequest("t", res.getToken());
+        EventRequest invalidEventIDRequest = new EventRequest("t", res.getAuthToken());
         errorRes = (ResponseMessage)EventService.event(invalidTokenRequest);
         assertTrue("Person() should have given error due to invalid eventID", errorRes.isError());
     }

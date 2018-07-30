@@ -39,7 +39,6 @@ public class RegisterService {
         try {
             AuthToken newToken;
             conn = DBConnManager.getConnection();
-
             UUID personID = UUID.randomUUID();
             try {//make new account
                 u.setPersonID(personID.toString());
@@ -71,7 +70,7 @@ public class RegisterService {
             } catch(Exception e) {
                 throw new Exception("Failed to create tree data for user.");
             }
-            return new RegisterResponse(TokenObj.getUsername(), TokenObj.getToken(),
+            return new RegisterResponse(TokenObj.getUserName(), TokenObj.getToken(),
                                         personID.toString(), null);
         } catch(Exception e){
             return new ResponseMessage(e.toString(), true);

@@ -41,7 +41,6 @@ public class ResponseMessage {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(message, error);
     }
 }

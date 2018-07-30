@@ -10,22 +10,17 @@ import static org.junit.Assert.*;
 
 public class PersonDAOTest {
     Connection conn;
-    Person p1;
-    Person p2;
-    Person p3;
+    Person p1 = new Person("1234", "adam", "Jordan", "Andersen",
+                            "m", "Evelyn", "Mark", "NA");
+    Person p2 = new Person("4566", "adam", "Jacob", "Andersen",
+                            "m", "Evelyn", "Mark", "NA");
+    Person p3 = new Person("7896", "adam", "Kaitlyn", "Andersen",
+                            "f", "Evelyn", "Mark", "NA");
 
     @org.junit.Before
     public void setUp() throws Exception {
         Connection conn = DBConnManager.getConnection();
         DBConnManager.clearTables(conn);
-
-        p1 = new Person("1234", "adam", "Jordan", "Andersen",
-                "m", "Evelyn", "Mark", "NA");
-        p2 = new Person("4566", "adam", "Jacob", "Andersen",
-                "m", "Evelyn", "Mark", "NA");
-        p3 = new Person("7896", "adam", "Kaitlyn", "Andersen",
-                "f", "Evelyn", "Mark", "NA");
-
         PersonDAO.createPerson(p1, conn);
         PersonDAO.createPerson(p2, conn);
         PersonDAO.createPerson(p3, conn);
@@ -71,7 +66,7 @@ public class PersonDAOTest {
         Boolean threw = false;
 
         try {
-            resultPerson = PersonDAO.getPerson("12345");
+            resultPerson = PersonDAO.getPerson("12345", "adam");
         }
         catch(SQLException e) {
             threw = true;
@@ -80,7 +75,7 @@ public class PersonDAOTest {
 
         threw = false;
         try {
-            resultPerson = PersonDAO.getPerson(null);
+            resultPerson = PersonDAO.getPerson(null, "adam");
         }
         catch(SQLException e) {
             threw = true;
@@ -90,11 +85,11 @@ public class PersonDAOTest {
 
     @org.junit.Test
     public void testGetPerson() throws Exception{
-        Person result = PersonDAO.getPerson("1234");
+        Person result = PersonDAO.getPerson("1234", "adam");
         assertTrue("getPerson did not get right person e1", p1.equals(result));
-        result = PersonDAO.getPerson("4566");
+        result = PersonDAO.getPerson("4566", "adam");
         assertTrue("getPerson did not get right person e2", p2.equals(result));
-        result = PersonDAO.getPerson("7896");
+        result = PersonDAO.getPerson("7896", "adam");
         assertTrue("getPerson did not get right person e3", p3.equals(result));
     }
 

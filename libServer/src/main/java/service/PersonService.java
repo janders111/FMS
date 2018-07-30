@@ -1,12 +1,8 @@
 package service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import db.AuthTokenDAO;
-import db.DBConnManager;
 import db.PersonDAO;
-import db.UserDAO;
 import model.Person;
 import service.ReqAndResponses.PersonAllFamilyResponse;
 import service.ReqAndResponses.PersonRequest;

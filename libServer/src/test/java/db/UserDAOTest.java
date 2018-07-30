@@ -5,7 +5,8 @@ import java.sql.Connection;
 import model.User;
 
 public class UserDAOTest extends TestCase {
-    User u = new User("username", "pass", "emailll", "j", "andersen", "m", "personIDDDDDD");
+    User u = new User("username", "pass", "emailll", "j",
+                        "andersen", "m", "personIDDDDDD");
 
     public void setUp() throws Exception {
         super.setUp();

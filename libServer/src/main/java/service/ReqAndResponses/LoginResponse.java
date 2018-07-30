@@ -11,8 +11,8 @@ public class LoginResponse {
 
     /**
      *
-     * @param username Same as the one included in the request
-     * @param token Login Auth token
+     * @param userName Same as the one included in the request
+     * @param authToken Login Auth token
      * @param personID
      * @param message only filled if an error occured. Otherwise null.
      */

@@ -47,7 +47,7 @@ public class ClearServiceTest extends TestCase {
         threw = false;
 
         try {//check that persons table got cleared
-            PersonDAO.getPerson("p");
+            PersonDAO.getPerson("p", "e");
         } catch (Exception ex){
             threw = true;
         }

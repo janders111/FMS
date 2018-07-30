@@ -26,6 +26,7 @@ public class EventDAO extends DBConnManager {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Event resultEvent = null;
+
         try {
             conn1 = DBConnManager.getConnection();
             String sql = "SELECT * FROM Events WHERE EventID = ? AND Descendant = ?";
@@ -38,6 +39,7 @@ public class EventDAO extends DBConnManager {
                 resultEvent = new Event(rs.getString(1), rs.getString(2), rs.getString(3),
                         rs.getFloat(4), rs.getFloat(5), rs.getString(6), rs.getString(7),
                         rs.getString(8), rs.getInt(9));
+                return resultEvent;
             } else {
                 throw new SQLException("No event found with that ID and descendant.");
             }
@@ -50,7 +52,6 @@ public class EventDAO extends DBConnManager {
             if (stmt != null)
                 stmt.close();
         }
-        return resultEvent;
     }
 
     public static ArrayList<Event> getUsersEvents(String userName) throws SQLException {
@@ -97,10 +98,6 @@ public class EventDAO extends DBConnManager {
             String sql = "DELETE FROM Events WHERE Descendant = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, userName);
-
-            //if (stmt.executeUpdate() != 1) {
-            //    throw new SQLException("deleteUsersEvents failed: Could not delete");
-            //}
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -113,11 +110,10 @@ public class EventDAO extends DBConnManager {
 
     public static Event createEvent(Event e, Connection conn) throws SQLException {
         checkConnection(conn);
-        PreparedStatement stmt = null;
         String sql = "INSERT INTO Events (EventID, Descendant, PersonID, " +
                 "Latitude, Longitude, Country, City, EventType, Year) VALUES(?,?,?,?,?,?,?,?,?)";
 
-        stmt = conn.prepareStatement(sql);
+        PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, e.getEventID());
         stmt.setString(2, e.getDescendant());
         stmt.setString(3, e.getPersonID());
@@ -135,17 +131,6 @@ public class EventDAO extends DBConnManager {
             stmt.close();
         }
         return null;
-    }
-
-    public static void deleteAllEvents(Connection conn) throws SQLException {
-        checkConnection(conn);
-        PreparedStatement stmt = null;
-        String sql = "DELETE FROM Events";
-        stmt = conn.prepareStatement(sql);
-        stmt.executeUpdate();
-        if (stmt != null) {
-            stmt.close();
-        }
     }
 
     public static int getNumEvents(String Descendant, Connection conn) throws SQLException {
@@ -177,3 +162,15 @@ public class EventDAO extends DBConnManager {
         return numEvents;
     }
 }
+
+/* not needed
+    public static void deleteAllEvents(Connection conn) throws SQLException {
+        checkConnection(conn);
+        String sql = "DELETE FROM Events";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.executeUpdate();
+        if (stmt != null) {
+            stmt.close();
+        }
+    }
+ */

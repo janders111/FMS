@@ -52,9 +52,10 @@ class WebSiteHandler implements HttpHandler {
             }
         }
         catch (IOException e) {
-            System.out.println(e.toString());
             e.printStackTrace();
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
+        }
+        finally {
             exchange.getResponseBody().close();
         }
     }

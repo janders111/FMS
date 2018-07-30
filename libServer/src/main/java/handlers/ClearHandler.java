@@ -19,8 +19,10 @@ class ClearHandler extends ObjEncoderDecoder implements HttpHandler {
         }
         catch (IOException e) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
-            exchange.getResponseBody().close();
             e.printStackTrace();
+        }
+        finally {
+            exchange.getResponseBody().close();
         }
     }
 }

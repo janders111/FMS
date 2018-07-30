@@ -16,15 +16,14 @@ public class AuthTokenDAO extends DBConnManager {
 
     public static void createAuthToken(AuthToken TokenObj, Connection conn) throws SQLException{
         checkConnection(conn);
-        PreparedStatement stmt = null;
         String sql = "DELETE FROM AuthTokens WHERE Username = ?";
-        stmt = conn.prepareStatement(sql);
-        stmt.setString(1, TokenObj.getUsername());
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, TokenObj.getUserName());
         stmt.executeUpdate();
 
         sql = "INSERT INTO AuthTokens (Username, Token) VALUES(?,?)";
         stmt = conn.prepareStatement(sql);
-        stmt.setString(1, TokenObj.getUsername());
+        stmt.setString(1, TokenObj.getUserName());
         stmt.setString(2, TokenObj.getToken());
 
         if (stmt.executeUpdate() != 1) {
@@ -49,7 +48,7 @@ public class AuthTokenDAO extends DBConnManager {
 
             rs = stmt.executeQuery();
             if (rs.next()) {
-                userName = rs.getString(1);
+                return rs.getString(1);
             }
             else {
                 throw new SQLException("authToken not found.");
@@ -65,7 +64,6 @@ public class AuthTokenDAO extends DBConnManager {
             if (stmt != null)
                 stmt.close();
         }
-        return userName;
     }
 }
 

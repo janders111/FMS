@@ -24,7 +24,7 @@ public class RegisterResponse {
     /**
      *
      * @param userName non-empty string, same as passed in username.
-     * @param token non-empty auth token string.
+     * @param authToken non-empty auth token string.
      * @param personID non-empty string, newly generated for the user.
      * @param message Only filled if there is an error. Otherwise this is null.
      */

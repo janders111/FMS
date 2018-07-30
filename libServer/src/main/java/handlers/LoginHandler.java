@@ -47,8 +47,10 @@ public class LoginHandler extends ObjEncoderDecoder implements HttpHandler {
         }
         catch (Exception e) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
-            exchange.getResponseBody().close();
             e.printStackTrace();
+        }
+        finally {
+            exchange.getResponseBody().close();
         }
     }
 }

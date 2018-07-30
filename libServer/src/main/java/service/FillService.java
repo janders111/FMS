@@ -40,7 +40,7 @@ public class FillService {
             if(r.getNumGenerations() < 1) {
                 throw new IOException("numGenerations must be greater than zero");
             }
-            if(r.getNumGenerations() > 25) {
+            if(r.getNumGenerations() > 30) {
                 throw new IOException("numGenerations too high");
             }
             conn = DBConnManager.getConnection();
@@ -50,13 +50,17 @@ public class FillService {
                 PersonDAO.deleteUsersPeople(r.getUserName(), conn);
                 EventDAO.deleteUsersEvents(r.getUserName(), conn);
                 DBConnManager.closeConnection(conn, true);
+            } catch (Exception e) {
+                throw new IOException("Error deleting old data.");
+            }
+            try {
                 conn = DBConnManager.getConnection();
                 //keep track of number of events for the response message.
                 numEventsBefore = EventDAO.getNumEvents(r.getUserName(), conn);
-                String momName = GetName.getFemaleName();
-                String dadName = GetName.getMaleName();
+                String momID = UUID.randomUUID().toString();
+                String dadID = UUID.randomUUID().toString();
                 //add the user to the tree, and their birth event.
-                Person p = ObjEncoderDecoder.createPersonFromUser(u, momName, dadName, conn);
+                Person p = ObjEncoderDecoder.createPersonFromUser(u, momID, dadID, conn);
                 addBirth(p, 1996, conn); //the user needs a bday
                 numPeople = generateTree(p, r.getNumGenerations(), 1996, conn);
                 numEventsAdded = EventDAO.getNumEvents(r.getUserName(), conn) - numEventsBefore;

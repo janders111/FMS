@@ -132,10 +132,8 @@ public class PersonDAO extends DBConnManager {
         String sql = "DELETE FROM Persons WHERE Descendant = ?";
         stmt = conn.prepareStatement(sql);
         stmt.setString(1, userID);
+        stmt.executeUpdate();
 
-        if (stmt.executeUpdate() != 1) {
-            success = false;
-        }
         if (stmt != null) {
             stmt.close();
         }

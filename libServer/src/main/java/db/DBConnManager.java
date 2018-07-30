@@ -24,8 +24,7 @@ public class DBConnManager {
 
     public static void createTables(Connection conn) throws SQLException {
         checkConnection(conn);
-        Statement stmt = null;
-        stmt = conn.createStatement();
+        Statement stmt = conn.createStatement();
         stmt.executeUpdate("" +
                 "CREATE TABLE IF NOT EXISTS `Events` (\n" +
                 "        `EventID`       TEXT NOT NULL UNIQUE,\n" +

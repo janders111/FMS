@@ -34,8 +34,8 @@ public class RegisterServiceTest extends TestCase {
         assertEquals("Events were not added", numEvents, 91);
 
         //test that user was logged in and has authToken
-        String userName = res.getUsername();
-        String returnedName = AuthTokenDAO.getUsernameFromToken(res.getToken());
+        String userName = res.getUserName();
+        String returnedName = AuthTokenDAO.getUsernameFromToken(res.getAuthToken());
         assertTrue("authToken not found for added user", userName.equals(returnedName));
     }
 
