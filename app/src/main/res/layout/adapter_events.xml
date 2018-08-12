@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:id="@+id/eventAdaptersTextView">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventIcon"
+        android:padding="10dp"
+        android:src="@drawable/marker" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Please click on an event"
+            android:id="@+id/topTextAdapter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|left"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="for details."
+            android:id="@+id/bottomTextAdapter" />
+    </LinearLayout>
+
+</LinearLayout>

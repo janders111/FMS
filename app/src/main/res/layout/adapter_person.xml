@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/personAdapter">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_width="70dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/genderImagePersonAdapter"
+        android:padding="10dp"
+        android:src="@android:drawable/btn_star_big_on" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Please click on an event"
+            android:id="@+id/topTextPersonAdapter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|left"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="for details."
+            android:id="@+id/bottomTextPersonAdapter" />
+    </LinearLayout>
+
+</LinearLayout>

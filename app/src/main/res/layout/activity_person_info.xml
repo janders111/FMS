@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".ui.PersonInfoActivity">
+
+    <TextView
+        android:id="@+id/firstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jordan"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/firstNameDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FIRST NAME" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_google_signin_btn_text_dark_focused" />
+
+
+    <TextView
+        android:id="@+id/lastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Andersen"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/lastNameDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LAST NAME" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_google_signin_btn_text_dark_focused" />
+
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Male"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/GenderDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GENDER" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_google_signin_btn_text_dark_focused" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="13dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/containerForScrollview">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lifeEventsDescriptionContainer">
+                <TextView
+                    android:id="@+id/LifeEventsDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="LIFE EVENTS"
+                    android:textSize="20dp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+                <ImageView
+                    android:layout_weight="0"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/expand"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_weight="1"
+                android:id="@+id/lifeEventsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/familyDescriptionContainer">
+
+                <TextView
+                    android:id="@+id/familyDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="FAMILY"
+                    android:textSize="20dp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+                <ImageView
+                    android:layout_weight="0"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/expand"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_weight="6"
+                android:id="@+id/familyRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

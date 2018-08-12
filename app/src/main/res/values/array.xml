@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mapOptionsArray"
+        id="mapOptionsArray">
+        <item>None</item>
+        <item>Normal</item>
+        <item>Satelite</item>
+        <item>Terrain</item>
+        <item>Hybrid</item>
+    </string-array>
+
+    <string-array name="lineColorOptions"
+        id="lineColorOptions">
+        <item>Red</item>
+        <item>Maroon</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Blue</item>
+    </string-array>
+</resources>

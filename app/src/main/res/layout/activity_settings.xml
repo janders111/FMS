@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".ui.SettingsActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Life Story Lines"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/common_google_signin_btn_text_light_pressed" />
+
+        <Spinner
+            android:id="@+id/lifeStoryColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/lifeStoryLinesOnOff"
+            android:layout_toLeftOf="@+id/lifeStoryLinesOnOff"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp" />
+
+        <Switch
+            android:id="@+id/lifeStoryLinesOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:checked="false"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Family Tree Lines"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/common_google_signin_btn_text_light_pressed" />
+
+        <Spinner
+            android:id="@+id/familyTreeLinesColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/familyTreeLinesOnOff"
+            android:layout_toLeftOf="@+id/familyTreeLinesOnOff"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp" />
+
+        <Switch
+            android:id="@+id/familyTreeLinesOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:checked="false"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Spouse Lines"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/common_google_signin_btn_text_light_pressed" />
+
+        <Spinner
+            android:id="@+id/spouseLinesColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/spouseLinesLinesOnOff"
+            android:layout_toLeftOf="@+id/spouseLinesLinesOnOff"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp" />
+
+        <Switch
+            android:id="@+id/spouseLinesLinesOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:checked="false"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Map Type"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/common_google_signin_btn_text_light_pressed" />
+
+        <Spinner
+            android:id="@+id/mapType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/resync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="30dp"
+        android:text="Resync User Data" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Logout" />
+
+
+</LinearLayout>
