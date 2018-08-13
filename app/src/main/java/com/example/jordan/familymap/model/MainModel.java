@@ -99,13 +99,14 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
         }
         for (Event e : events) {
             eventIDToEvent.put(e.getEventID(), e);
-//            for(String type : eventTypes) {
-//                Boolean alreadyAdded = type.toLowerCase().equals(e.getEventType().toLowerCase());
-//                if(alreadyAdded == false) {
-//                    eventTypes.add(e.getEventType());
-//                }
-//            }
-            if (!eventTypes.contains(e.getEventType())) {
+
+            Boolean alreadyAdded = false;
+            for(String type : eventTypes) {
+                if(type.toLowerCase().equals(e.getEventType().toLowerCase())) {
+                    alreadyAdded = true;
+                }
+            }
+            if(alreadyAdded == false) {
                 eventTypes.add(e.getEventType());
             }
         }
@@ -170,7 +171,7 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
         for (String eventType : eventTypes) {
             MapColor color = new MapColor();
             color.setMeToRandomHue();
-            eventTypeColors.put(eventType, color);
+            eventTypeColors.put(eventType.toLowerCase(), color);
         }
     }
 
@@ -235,8 +236,8 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
     public static void setPassword(String password) { MainModel.password = password; }
 
 
-    public static Map<String, MapColor> getEventTypeColors() {
-        return eventTypeColors;
+    public static float getEventTypeColors(Event e) {
+        return eventTypeColors.get(e.getEventType().toLowerCase()).getHue();
     }
 
     public static ArrayList<Event> getEventsArrayList() {

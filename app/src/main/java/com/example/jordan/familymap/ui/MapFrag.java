@@ -206,7 +206,7 @@ public class MapFrag extends android.support.v4.app.Fragment implements OnMapRea
 
         for(Event e : FilterManager.getFilteredEvents()) {
             Person p = MainModel.getPersonIDtoPerson().get(e.getPersonID());
-            float hue = MainModel.getEventTypeColors().get(e.getEventType()).getHue();
+            float hue = MainModel.getEventTypeColors(e);
             Marker marker = googleMap.addMarker(
                     new MarkerOptions()
                             .position(new LatLng(e.getLatitude(), e.getLongitude()))
