@@ -40,9 +40,9 @@ public class LoginFrag extends Fragment implements com.example.jordan.familymap.
     private RadioGroup mGender;
     private Boolean male = false;
     private Boolean female = false;
-    private Boolean successfullyGotResult = false;
 
     public LoginFrag() {
+        MainModel.setLf(this);
         // Required empty public constructor
     }
     @Override
@@ -176,11 +176,9 @@ public class LoginFrag extends Fragment implements com.example.jordan.familymap.
     @Override //interface function that gives this class the data after registerTask is called
     public void setRegisterInterfaceResult(RegisterResponse regResponse) {
         if(regResponse == null) {
-            successfullyGotResult = false;
             toast("Connection error");
         }
         else if(!regResponse.valid()) {
-            successfullyGotResult = false;
             toast("Registration error.");
         }
         else {
@@ -191,11 +189,9 @@ public class LoginFrag extends Fragment implements com.example.jordan.familymap.
     @Override
     public void setLoginInterfaceResult(LoginResponse loginResponse) {
         if(loginResponse == null) {
-            successfullyGotResult = false;
             toast("Connection error");
         }
         else if(!loginResponse.valid()) {
-            successfullyGotResult = false;//remove???????
             toast("Login error.");
         }
         else {
@@ -205,7 +201,7 @@ public class LoginFrag extends Fragment implements com.example.jordan.familymap.
 
     private void finishLogin(LoginResponse lr) {
         toast("Welcome " + lr.getUserName());
-        successfullyGotResult = true;
+        MainModel.setPassword(mPassword.getText().toString());
         //MainModel.fillAllData(lr);
         requestFillAllData(lr);
     }
@@ -217,5 +213,10 @@ public class LoginFrag extends Fragment implements com.example.jordan.familymap.
 
     public void toast(String s) {
         Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+    }
+
+    public void resync() {
+        LoginRequest req = new LoginRequest(MainModel.getUserName(), MainModel.getPassword());
+        requestLogin(req);
     }
 }

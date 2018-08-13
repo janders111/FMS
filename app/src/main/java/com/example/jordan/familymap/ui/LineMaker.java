@@ -2,6 +2,7 @@ package com.example.jordan.familymap.ui;
 
 import android.content.Context;
 
+import com.example.jordan.familymap.model.FilterManager;
 import com.example.jordan.familymap.model.LineColors;
 import com.example.jordan.familymap.model.MainModel;
 import com.example.jordan.familymap.model.SettingsManager;
@@ -18,7 +19,7 @@ import model.Event;
 import model.Person;
 
 public class LineMaker {
-    private static ArrayList<Polyline> lines;
+    private static ArrayList<Polyline> lines = new ArrayList<>();
     static int familyLinesStartWidth = 25;
     static int minLineWidth = 2;
 
@@ -28,45 +29,48 @@ public class LineMaker {
         }
     };
 
-    public static void setLines(Person p, GoogleMap gm) {
-        lines = new ArrayList<Polyline>();
+    public static void setLines(Event e, Person p, GoogleMap gm) {
+        if(lines.size() > 0) {
+            for(Polyline pLine : lines) {
+                pLine.remove();
+            }
+            lines.clear();
+        }
 
         if(SettingsManager.getSpouseLines() == true) {
-            addSpouseLines(p, gm);
+            addSpouseLines(e, p, gm);
         }
         if(SettingsManager.getFamilyTreeLines() == true) {
-            addFamilyTree(p, gm, familyLinesStartWidth);
+            addFamilyTree(e, p, gm, familyLinesStartWidth);
         }
         if(SettingsManager.getLifeStoryLines() == true) {
-            addStoryLines(p, gm);
+            addStoryLines(e, p, gm);
         }
     }
 
-    private static void addSpouseLines(Person p, GoogleMap gm) {
+    private static void addSpouseLines(Event e, Person p, GoogleMap gm) {
         if(p.getSpouse() == null)
             return;
         if(p.getSpouse().equals(""))
             return;
-        for(Person potentialSpouse : MainModel.getPeople()) {
+        for(Person potentialSpouse : FilterManager.getFilteredPeople()) {
             if(potentialSpouse.getPersonID().equals(p.getSpouse())) {
-                addSpouseLinesHelper(p, potentialSpouse, gm);
+                addSpouseLinesHelper(e, potentialSpouse, gm);
             }
         }
     }
 
-    private static void addSpouseLinesHelper(Person p1, Person p2, GoogleMap gm) {
-        Event e1 = getEarliestEvent(p1.getPersonID());
+    private static void addSpouseLinesHelper(Event e1,  Person p2, GoogleMap gm) {
         Event e2 = getEarliestEvent(p2.getPersonID());
         if(e1 == null || e2 == null)
             return;
         addLineBetween(e1, e2, LineColors.getColorSL(), gm);
     }
 
-    private static void addFamilyTree(Person p, GoogleMap gm, int width) {
+    private static void addFamilyTree(Event e1, Person p, GoogleMap gm, int width) {
         if(width < minLineWidth) {
             width = minLineWidth;
         }
-        Event e1 = getEarliestEvent(p.getPersonID());
         if (e1 == null)
             return;
         if(p.getFather() != null) {
@@ -74,7 +78,7 @@ public class LineMaker {
             if(fatherBirth != null) {
                 addLineWithWidth(e1, fatherBirth, LineColors.getColorFT(), gm, width);
                 Person father = MainModel.getPersonIDtoPerson().get(p.getFather());
-                addFamilyTree(father, gm, width - 8);
+                addFamilyTree(fatherBirth, father, gm, width - 8);
             }
         }
         if(p.getMother() != null) {
@@ -82,17 +86,17 @@ public class LineMaker {
             if(motherBirth != null) {
                 addLineWithWidth(e1, motherBirth, LineColors.getColorFT(), gm, width);
                 Person mother = MainModel.getPersonIDtoPerson().get(p.getMother());
-                addFamilyTree(mother, gm, width - 8);
+                addFamilyTree(motherBirth, mother, gm, width - 8);
             }
         }
     }
 
-    private static void addStoryLines(Person p, GoogleMap gm) {
+    private static void addStoryLines(Event e, Person p, GoogleMap gm) {
         ArrayList<Event> personEvents = new ArrayList<>();
-        personEvents = MainModel.getPersonToEvents().get(p.getPersonID());
+        personEvents = FilterManager.getPersonToFilteredEvents(p.getPersonID());
         if(personEvents == null)
             return;
-        if(personEvents.size() <= 1)
+        if(personEvents.size() < 2)
             return;
         Context mContext;
         personEvents.sort(eventComparator);
@@ -126,7 +130,7 @@ public class LineMaker {
 
     private static Event getEarliestEvent(String personID) {
         ArrayList<Event> personEvents = new ArrayList<>();
-        personEvents = MainModel.getPersonToEvents().get(personID);
+        personEvents = FilterManager.getPersonToFilteredEvents(personID);
         if(personEvents == null)
             return null;
         if(personEvents.isEmpty())

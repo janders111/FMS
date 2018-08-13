@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.MenuItem;
 
 import com.example.jordan.familymap.R;
+import com.example.jordan.familymap.model.FilterManager;
 import com.example.jordan.familymap.model.MainModel;
 
 import java.util.ArrayList;
@@ -31,22 +33,6 @@ public class SearchActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_search);
 
-        SearchView searchView = (SearchView) findViewById(R.id.mySearchView);
-        searchView.setIconifiedByDefault(true);
-        searchView.setFocusable(true);
-        searchView.setIconified(false);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
         setContentView(R.layout.activity_search);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -59,29 +45,49 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new SearchAdapter(getNarrowedResults("sh"), getBaseContext());
-        mRecyclerView.setAdapter(mAdapter);
+
+        SearchView searchView = (SearchView) findViewById(R.id.mySearchView);
+        searchView.setIconifiedByDefault(false);
+        searchView.setFocusable(true);
+        searchView.setIconified(false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mAdapter = new SearchAdapter(getNarrowedResults(query), getBaseContext());
+                mRecyclerView.setAdapter(mAdapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     private ArrayList<Object> getNarrowedResults(String search) {
         search = search.toLowerCase();
         ArrayList<Object> results = new ArrayList<>();
         for(Person p : MainModel.getPeople()) {
-            if(p.getLastName().contains(search) || p.getFirstName().contains(search)) {
+            if(p.getLastName().toLowerCase().contains(search) || p.getFirstName().toLowerCase().contains(search)) {
                 results.add(p);
             }
         }
-        for(Event e : MainModel.getEvents()) {
-            if(e.getEventType().contains(search)) {
+        for(Event e : FilterManager.getFilteredEvents()) {
+            if(e.getEventType().toLowerCase().contains(search)) {
                 results.add(e);
             }
         }
-        for(int i = 0; i < 8; i++) {
-            results.add(MainModel.getPeople()[i]);
-        }
-        for(int i = 0; i < 13; i++) {
-            results.add(MainModel.getEvents()[i]);
-        }
         return results;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);;
+        if(item.getItemId() == android.R.id.home) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        return true;
     }
 }

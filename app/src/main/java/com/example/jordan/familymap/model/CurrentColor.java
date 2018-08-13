@@ -11,4 +11,8 @@ public class CurrentColor {
         currentColor = currentColor + 25;
         currentColor = currentColor % 360;
     }
+
+    public static void clear() {
+        currentColor = 0;
+    }
 }

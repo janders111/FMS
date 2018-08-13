@@ -7,6 +7,13 @@ public class SettingsManager {
 
     private static int currentMapType = 1; //an int from one to four
 
+    public static void clear() {
+        lifeStoryLines = true;
+        familyTreeLines = true;
+        spouseLines = true;
+        currentMapType = 1;
+    }
+
     public static Boolean getLifeStoryLines() {
         return lifeStoryLines;
     }

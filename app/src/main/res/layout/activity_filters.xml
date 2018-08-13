@@ -83,12 +83,6 @@
             android:checked="true" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/common_google_signin_btn_text_dark_focused" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,6 +91,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Custom Filters:"
         android:id="@+id/filterText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/common_google_signin_btn_text_dark_focused" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/filterRecycler"

@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.jordan.familymap.R;
 import com.example.jordan.familymap.model.FilterManager;
+import com.example.jordan.familymap.model.LineColors;
+import com.example.jordan.familymap.model.SettingsManager;
 
 import java.util.ArrayList;
 
@@ -61,9 +63,11 @@ public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.ViewHold
         // - replace the contents of the view with that element
         //holder.mRelativeLayout.setText(mDataset[position]);
         holder.filterText.setText("Show " + eventTypes.get(position));
+        holder.showType.setChecked(FilterManager.eventIsEnabled(position));
         holder.showType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(buttonView.getContext(), "test " + position, Toast.LENGTH_LONG).show();
+                //Toast.makeText(buttonView.getContext(), "test " + position, Toast.LENGTH_LONG).show();
+                FilterManager.toggleEvent(position, isChecked);
             }
         });
     }

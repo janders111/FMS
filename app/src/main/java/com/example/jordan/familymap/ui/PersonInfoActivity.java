@@ -1,16 +1,19 @@
 package com.example.jordan.familymap.ui;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jordan.familymap.R;
+import com.example.jordan.familymap.model.FilterManager;
 import com.example.jordan.familymap.model.MainModel;
 
 import java.util.ArrayList;
@@ -52,7 +55,7 @@ public class PersonInfoActivity extends AppCompatActivity {
         }
         person = MainModel.getPersonIDtoPerson().get(personID);
 
-        lifeEvents = MainModel.getPersonToEvents().get(personID);
+        lifeEvents = FilterManager.getPersonToFilteredEvents(personID);
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
 
@@ -60,6 +63,17 @@ public class PersonInfoActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         populateFamily();
         updateView();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);;
+        if(item.getItemId() == android.R.id.home) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        return true;
     }
 
     protected void populateFamily() {

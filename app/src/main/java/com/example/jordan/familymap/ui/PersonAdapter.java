@@ -25,6 +25,10 @@ import java.util.Comparator;
 import model.Event;
 import model.Person;
 
+/**
+ * Adapter that can be used for Persons when we have to print out relationships (mother, father, etc.)
+ * Otherwise, just use the search adapter which is universal.
+ */
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder> {
     private ArrayList<Person> family;
     private ArrayList<String> relationshipTypes;
@@ -94,8 +98,6 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
         holder.mListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //use the
-                System.out.println("CLICKED A FAMILY CONNECTION");
                 if(p != null){
                     Intent intent = new Intent(mContext, PersonInfoActivity.class);
                     intent.putExtra("currentPerson", p.getPersonID());

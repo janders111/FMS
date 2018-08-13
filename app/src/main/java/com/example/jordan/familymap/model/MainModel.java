@@ -1,6 +1,8 @@
 package com.example.jordan.familymap.model;
 
 import android.widget.Toast;
+
+import com.example.jordan.familymap.ui.LoginFrag;
 import com.example.jordan.familymap.ui.MapColor;
 
 import java.util.ArrayList;
@@ -21,14 +23,12 @@ import model.Person;
 /**
  * caches the data for the user's login session
  */
-public class MainModel implements com.example.jordan.familymap.async.FillAllDataTask.fillDataInterface{
+public class MainModel implements com.example.jordan.familymap.async.FillAllDataTask.fillDataInterface {
+    private static LoginFrag lf;
     private static Event[] events;
     private static Person[] people;
-    private static Map<String, Person> personIDtoPerson = new HashMap<String, Person>();;
-    private static Map<String, Event> eventIDToEvent = new HashMap<String, Event>();;
-    private static Map<String, ArrayList<Event>> personToEvents = new HashMap<String, ArrayList<Event>>();;
-    //private static Settings settings
-    //private static Filter filter
+    private static Map<String, Person> personIDtoPerson = new HashMap<String, Person>();
+    private static Map<String, Event> eventIDToEvent = new HashMap<String, Event>();
     private static ArrayList<String> eventTypes = new ArrayList<String>(); //arrayList, every type of event ex: birth, death, etc.
     private static Map<String, MapColor> eventTypeColors = new HashMap<String, MapColor>();
     private static Person user;
@@ -36,13 +36,31 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
     private static Set<String> maternalAcnestors = new HashSet<String>();
     private static Map<String, ArrayList<Person>> personToChildren = new HashMap<String, ArrayList<Person>>();
     private static String userName;
+    private static String password;
     private static String authToken;
     private static String usersID;
 
-    private MainModel() { }
+    private MainModel() {
+    }
 
+    public static void clear() {
+        Event[] events = null;
+        Person[] people = null;
+        personIDtoPerson =  new HashMap<String, Person>();
+        eventIDToEvent = new HashMap<String, Event>();
+        eventTypes = new ArrayList<String>(); //arrayList, every type of event ex: birth, death, etc.
+        eventTypeColors = new HashMap<String, MapColor>();
+        user = null;
+        paternalAncestors = new HashSet<String>();
+        maternalAcnestors = new HashSet<String>();
+        personToChildren = new HashMap<String, ArrayList<Person>>();
+        userName = null;
+        authToken = null;
+        usersID = null;
+    }
     /**
      * This function initializes most of the variables/data above. It must be run as async.
+     *
      * @param lr
      * @return
      */
@@ -54,13 +72,13 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
 
         ProxyServer.setAuthToken(authToken);
         PersonAllFamilyResponse famRes = ProxyServer.getUsersPeople();
-        if(famRes != null)
+        if (famRes != null)
             people = famRes.getPersonArray();
         else
             error += "Error getting family. ";
 
         PersonAllEventsResponse eventsRes = ProxyServer.getUsersEvents();
-        if(eventsRes != null)
+        if (eventsRes != null)
             events = eventsRes.getEventArray();
         else
             error += "Error getting events. ";
@@ -69,47 +87,17 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
         return error;
     }
 
-    public static void filterMales() {
-        ArrayList<Event> arrl = new ArrayList<>();
-        for (Event p : events) {
-            if(p.getCountry().equals("Brazil")) {
-                arrl.add(p);
-            }
-            events = new Event[arrl.size()];
-            int i = 0;
-            for(Event ev : arrl) {
-                events[i] = ev;
-                i++;
-            }
-        }
-    }
-
-    public static void filterMalesReal() {
-        ArrayList<Person> arrl = new ArrayList<>();
+    private static void secondaryFillAllData() {
         for (Person p : people) {
-            if(p.getGender().equals("m")) {
-                arrl.add(p);
-            }
-            people = new Person[arrl.size()];
-            int i = 0;
-            for(Person pers : arrl) {
-                people[i] = pers;
-                i++;
-            }
-        }
-    }
-
-    private static void secondaryFillAllData(){
-        for(Person p : people) {
-            if(p.getPersonID().equals(usersID)) {
+            if (p.getPersonID().equals(usersID)) {
                 user = p;
                 break;
             }
         }
-        for(Person p : people) {
+        for (Person p : people) {
             personIDtoPerson.put(p.getPersonID(), p);
         }
-        for(Event e : events) {
+        for (Event e : events) {
             eventIDToEvent.put(e.getEventID(), e);
 //            for(String type : eventTypes) {
 //                Boolean alreadyAdded = type.toLowerCase().equals(e.getEventType().toLowerCase());
@@ -117,70 +105,58 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
 //                    eventTypes.add(e.getEventType());
 //                }
 //            }
-            if(!eventTypes.contains(e.getEventType())) {
+            if (!eventTypes.contains(e.getEventType())) {
                 eventTypes.add(e.getEventType());
             }
-        }
-        for(Person p : people) {
-            String personID = p.getPersonID();
-            ArrayList<Event> personEvents = new ArrayList<Event>();
-            for(Event e: events) {
-                if(personID.equals(e.getPersonID())) {
-                    personEvents.add(e);
-                }
-            }
-            personToEvents.put(personID, personEvents);
         }
 
         //paternal Ancestors
         Person currentPerson = user;
-        while(true){
+        while (true) {
             String fatherID = currentPerson.getFather();
             Person foundAncestor = null;
-            for(Person p : people) {
-                if(fatherID != null) {
-                    if(fatherID.equals(p.getPersonID())) {
+            for (Person p : people) {
+                if (fatherID != null) {
+                    if (fatherID.equals(p.getPersonID())) {
                         foundAncestor = p;
                         break;
                     }
                 }
             }
-            if(foundAncestor != null) {
+            if (foundAncestor != null) {
                 paternalAncestors.add(foundAncestor.getPersonID());
                 currentPerson = foundAncestor;
-            }
-            else {
+            } else {
                 break;
             }
         }
 
         currentPerson = user;
-        while(true){
+        while (true) {
             String motherID = currentPerson.getMother();
             Person foundAncestor = null;
-            for(Person p : people) {
-                if(motherID != null) {
-                    if(motherID.equals(p.getPersonID())) {
+            for (Person p : people) {
+                if (motherID != null) {
+                    if (motherID.equals(p.getPersonID())) {
                         foundAncestor = p;
                         break;
                     }
                 }
             }
-            if(foundAncestor != null) {
+            if (foundAncestor != null) {
                 maternalAcnestors.add(foundAncestor.getPersonID());
                 currentPerson = foundAncestor;
-            }
-            else {
+            } else {
                 break;
             }
         }
 
         //get children for every user
-        for(Person p : people) {
+        for (Person p : people) {
             String parentID = p.getPersonID();
             ArrayList<Person> children = new ArrayList<Person>();
-            for(Person potentialChild : people) {
-                if(potentialChild.getFather() != null) {
+            for (Person potentialChild : people) {
+                if (potentialChild.getFather() != null) {
                     if (potentialChild.getFather().equals(parentID) ||
                             potentialChild.getMother().equals(parentID)) {
                         children.add(potentialChild);
@@ -191,18 +167,16 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
         }
 
         //set colors
-        for(String eventType : eventTypes) {
+        for (String eventType : eventTypes) {
             MapColor color = new MapColor();
             color.setMeToRandomHue();
             eventTypeColors.put(eventType, color);
         }
-
-        FilterManager.init();
     }
 
     @Override
     public void fillDataInterfaceResult(String error) {//runs once fillAllData is finished.
-        if(!error.equals("")) {
+        if (!error.equals("")) {
             System.out.println(error);
         }
         System.out.println(people.length + " people saved to phone");
@@ -222,10 +196,6 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
 
     public static Map<String, Event> getEventIDToEvent() {
         return eventIDToEvent;
-    }
-
-    public static Map<String, ArrayList<Event>> getPersonToEvents() {
-        return personToEvents;
     }
 
     public static ArrayList<String> getEventTypes() {
@@ -260,7 +230,34 @@ public class MainModel implements com.example.jordan.familymap.async.FillAllData
         return usersID;
     }
 
+    public static String getPassword() { return password; }
+
+    public static void setPassword(String password) { MainModel.password = password; }
+
+
     public static Map<String, MapColor> getEventTypeColors() {
         return eventTypeColors;
+    }
+
+    public static ArrayList<Event> getEventsArrayList() {
+        ArrayList<Event> tmpArr = new ArrayList<>();
+        for (Event e : MainModel.getEvents())
+            tmpArr.add(e);
+        return tmpArr;
+    }
+
+    public static ArrayList<Person> getPeopleArrayList() {
+        ArrayList<Person> tmpArr = new ArrayList<>();
+        for (Person p : MainModel.getPeople())
+            tmpArr.add(p);
+        return tmpArr;
+    }
+
+    public static LoginFrag getLf() {
+        return lf;
+    }
+
+    public static void setLf(LoginFrag lfTmp) {
+        lf = lfTmp;
     }
 }

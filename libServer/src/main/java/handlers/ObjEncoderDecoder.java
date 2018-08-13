@@ -29,7 +29,6 @@ public class ObjEncoderDecoder {
     public void sendJsonResponse(HttpExchange exchange, Object o) throws IOException {
         OutputStream os = exchange.getResponseBody();
         DataOutputStream dos = new DataOutputStream(os);
-        //exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0); fixme
         dos.writeBytes(objToJson(o));
         dos.flush();
         dos.close();

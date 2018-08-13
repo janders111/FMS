@@ -1,25 +1,39 @@
 package com.example.jordan.familymap.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.jordan.familymap.R;
+import com.example.jordan.familymap.async.LoginTask;
+import com.example.jordan.familymap.model.CurrentColor;
+import com.example.jordan.familymap.model.FilterManager;
 import com.example.jordan.familymap.model.LineColors;
+import com.example.jordan.familymap.model.MainModel;
 import com.example.jordan.familymap.model.SettingsManager;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-public class SettingsActivity extends AppCompatActivity {
+import ProxyServer.ProxyServer;
+import ReqAndResponses.LoginRequest;
+import ReqAndResponses.LoginResponse;
 
+public class SettingsActivity extends AppCompatActivity {
+    static Fragment sLoginFrag;
+    Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,5 +129,49 @@ public class SettingsActivity extends AppCompatActivity {
                 SettingsManager.setSpouseLines(isChecked);
             }
         });
+
+        Button logout = findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllData();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //intent.putExtra("currentPerson", currentPerson.getPersonID());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //ProcessPhoenix.triggerRebirth(getBaseContext(), intent);
+                startActivity(intent);
+            }
+        });
+
+        mContext = this;
+        Button resync = findViewById(R.id.resync);
+        resync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Refreshing Data", Toast.LENGTH_LONG).show();
+                clearAllData();
+                MainModel.getLf().resync();
+                Toast.makeText(v.getContext(), "Data Refreshed", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);;
+        if(item.getItemId() == android.R.id.home) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        return true;
+    }
+
+    private static void clearAllData() {
+        CurrentColor.clear();
+        FilterManager.clear();
+        LineColors.clear();
+        MainModel.clear();
+        SettingsManager.clear();
+        MapFrag.clear();
     }
 }

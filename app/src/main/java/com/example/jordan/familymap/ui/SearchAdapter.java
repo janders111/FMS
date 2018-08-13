@@ -20,10 +20,13 @@ import java.util.ArrayList;
 import model.Event;
 import model.Person;
 
+/**
+ * Adapter that can be used for Events, and Persons as long as we do not have to print out relationships (mother, father, etc.)
+ */
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private ArrayList<Object> resultsArray = new ArrayList<>();
     Context mContext;
-    static public LinearLayout layout;
+    //static public LinearLayout layout;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -41,7 +44,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             secondLine = v.findViewById(R.id.bottomTextAdapter);
             genderIconView = (ImageView) v.findViewById(R.id.eventIcon);
             mLayout = v;
-            layout = v;
+            //layout = v;
         }
     }
 

@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (fragment == null) {
             fragment = new LoginFrag();
+
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();

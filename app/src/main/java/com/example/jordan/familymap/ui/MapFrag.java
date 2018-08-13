@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jordan.familymap.R;
+import com.example.jordan.familymap.model.FilterManager;
 import com.example.jordan.familymap.model.MainModel;
 import com.example.jordan.familymap.model.SettingsManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -66,7 +67,7 @@ public class MapFrag extends android.support.v4.app.Fragment implements OnMapRea
     LinearLayout mEventDetails;
     private Event currentEvent = null;
     private Person currentPerson = null;
-    private String focusEventID = null;
+    private static String focusEventID = null;
 
     // / TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -195,12 +196,15 @@ public class MapFrag extends android.support.v4.app.Fragment implements OnMapRea
             public boolean onMarkerClick(Marker m) {
                 Event e = MainModel.getEventIDToEvent().get(m.getTag());
                 currentEvent = e;
+                focusEventID = e.getEventID();
                 showEventDetails(e);
+                Person p = MainModel.getPersonIDtoPerson().get(e.getPersonID());
+                LineMaker.setLines(e, p, mGoogleMap);
                 return false;// If this is false, then the default behavior will occur in addition to your custom behavior.
             }
         });
 
-        for(Event e : MainModel.getEvents()) {
+        for(Event e : FilterManager.getFilteredEvents()) {
             Person p = MainModel.getPersonIDtoPerson().get(e.getPersonID());
             float hue = MainModel.getEventTypeColors().get(e.getEventType()).getHue();
             Marker marker = googleMap.addMarker(
@@ -218,7 +222,7 @@ public class MapFrag extends android.support.v4.app.Fragment implements OnMapRea
             Person p = MainModel.getPersonIDtoPerson().get(focusEvent.getPersonID());
             CameraPosition c = CameraPosition.builder().target(new LatLng(focusEvent.getLatitude(), focusEvent.getLongitude())).build();
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(c));
-            LineMaker.setLines(p, googleMap);
+            LineMaker.setLines(focusEvent, p, googleMap);
             showEventDetails(focusEvent);
         }
     }
@@ -250,6 +254,7 @@ public class MapFrag extends android.support.v4.app.Fragment implements OnMapRea
         // Handle item selection
         Intent intent;
         switch (item.getItemId()) {
+
             case R.id.search:
                 intent = new Intent(getActivity(), SearchActivity.class);
                 //intent.putExtra("currentPerson", currentPerson.getPersonID());
@@ -265,6 +270,10 @@ public class MapFrag extends android.support.v4.app.Fragment implements OnMapRea
                 //intent.putExtra("currentPerson", currentPerson.getPersonID());
                 startActivity(intent);
                 return true;
+            case android.R.id.home:
+                intent = new Intent(getActivity(), MainActivity.class);;
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -283,5 +292,9 @@ public class MapFrag extends android.support.v4.app.Fragment implements OnMapRea
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public static void clear() {
+        focusEventID = null;
     }
 }

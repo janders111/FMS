@@ -8,6 +8,12 @@ public class LineColors {
     private static int colorFT = 2;
     private static int colorLS = 4;
 
+    public static void clear() {
+        colorSL = 0;
+        colorFT = 2;
+        colorLS = 4;
+    }
+
     public static int getColorSL() {
         return convertIndexToColor(colorSL);
     }
