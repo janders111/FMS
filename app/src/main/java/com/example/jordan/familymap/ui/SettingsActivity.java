@@ -18,7 +18,9 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.jordan.familymap.R;
+import com.example.jordan.familymap.async.FillAllDataTask;
 import com.example.jordan.familymap.async.LoginTask;
+import com.example.jordan.familymap.async.RegisterTask;
 import com.example.jordan.familymap.model.CurrentColor;
 import com.example.jordan.familymap.model.FilterManager;
 import com.example.jordan.familymap.model.LineColors;
@@ -30,8 +32,10 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import ProxyServer.ProxyServer;
 import ReqAndResponses.LoginRequest;
 import ReqAndResponses.LoginResponse;
+import ReqAndResponses.RegisterResponse;
+import model.User;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements com.example.jordan.familymap.async.LoginTask.loginResultInterface, com.example.jordan.familymap.async.FillAllDataTask.fillDataInterface{
     static Fragment sLoginFrag;
     Context mContext;
     @Override
@@ -149,8 +153,10 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "Refreshing Data", Toast.LENGTH_LONG).show();
+                LoginRequest req = new LoginRequest(MainModel.getUserName(), MainModel.getPassword());
                 clearAllData();
-                MainModel.getLf().resync();
+                requestLogin(req);
+                //todo find a way to run async from here asdfasdf
                 Toast.makeText(v.getContext(), "Data Refreshed", Toast.LENGTH_LONG).show();
             }
         });
@@ -173,5 +179,42 @@ public class SettingsActivity extends AppCompatActivity {
         MainModel.clear();
         SettingsManager.clear();
         MapFrag.clear();
+    }
+
+    @Override
+    public void fillDataInterfaceResult(String result) {
+        //((MainActivity) getActivity()).switchToMapFrag();
+    }
+
+    @Override
+    public void setLoginInterfaceResult(LoginResponse loginResponse) {
+        if(loginResponse == null) {
+            toast("Connection error");
+        }
+        else if(!loginResponse.valid()) {
+            toast("Login error.");
+        }
+        else {
+            MainModel.setPassword("parker");
+            //MainModel.fillAllData(lr);
+            requestFillAllData(loginResponse);
+        }
+    }
+    public void toast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+    }
+
+//    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//    startActivity(intent);
+
+
+    public void requestLogin(LoginRequest req) {//These two lines are in their own function so the context is right for using "this"
+        LoginTask task = new LoginTask(this);
+        task.execute(req);
+    }
+
+    public void requestFillAllData(LoginResponse res) {//These two lines are in their own function so the context is right for using "this"
+        FillAllDataTask task = new FillAllDataTask(this);
+        task.execute(res);
     }
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MapColor {
     private float counter = 0;
     private float incrementer = 44;
-    private float hue;
+    private float hue = 0;
 
     /**
      * when initialized, set myself to a random color

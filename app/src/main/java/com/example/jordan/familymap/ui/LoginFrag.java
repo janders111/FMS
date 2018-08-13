@@ -199,7 +199,7 @@ public class LoginFrag extends Fragment implements com.example.jordan.familymap.
         }
     }
 
-    private void finishLogin(LoginResponse lr) {
+    public void finishLogin(LoginResponse lr) {
         toast("Welcome " + lr.getUserName());
         MainModel.setPassword(mPassword.getText().toString());
         //MainModel.fillAllData(lr);
@@ -215,8 +215,4 @@ public class LoginFrag extends Fragment implements com.example.jordan.familymap.
         Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
 
-    public void resync() {
-        LoginRequest req = new LoginRequest(MainModel.getUserName(), MainModel.getPassword());
-        requestLogin(req);
-    }
 }
